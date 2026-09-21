@@ -1,0 +1,1058 @@
+<title>Теорія систем та системний аналіз</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500&display=swap">
+<style>
+  :root{
+    --paper:#EDEFEC;
+    --panel:#E4E8E4;
+    --panel-2:#F8F9F7;
+    --ink:#141A19;
+    --ink-2:#3C4744;
+    --muted:#6B7772;
+    --line:#C8D0CB;
+    --line-soft:#DCE2DD;
+    --accent:#125E58;
+    --accent-ink:#0C423E;
+    --accent-soft:#D3E3DF;
+    --clay:#A94E2C;
+    --clay-soft:#EEDBD1;
+
+    --display:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+    --body:"IBM Plex Serif",Georgia,serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Consolas,monospace;
+    --ui:"IBM Plex Sans",system-ui,sans-serif;
+
+    --wrap:1080px;
+    --gutter:clamp(18px,4vw,44px);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0E1312;
+      --panel:#161D1C;
+      --panel-2:#1B2322;
+      --ink:#E3E9E6;
+      --ink-2:#B6C1BC;
+      --muted:#87938E;
+      --line:#2B3634;
+      --line-soft:#212A29;
+      --accent:#65C1B4;
+      --accent-ink:#8FD7CC;
+      --accent-soft:#14312D;
+      --clay:#E08A5F;
+      --clay-soft:#3A2119;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0E1312;
+    --panel:#161D1C;
+    --panel-2:#1B2322;
+    --ink:#E3E9E6;
+    --ink-2:#B6C1BC;
+    --muted:#87938E;
+    --line:#2B3634;
+    --line-soft:#212A29;
+    --accent:#65C1B4;
+    --accent-ink:#8FD7CC;
+    --accent-soft:#14312D;
+    --clay:#E08A5F;
+    --clay-soft:#3A2119;
+  }
+
+  *{box-sizing:border-box}
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{
+    max-width:var(--wrap);
+    margin:0 auto;
+    padding-left:var(--gutter);
+    padding-right:var(--gutter);
+  }
+
+  h1,h2,h3,h4{font-family:var(--display);font-weight:600;line-height:1.1;text-wrap:balance;margin:0}
+  p{margin:0}
+  ul,ol{margin:0;padding:0;list-style:none}
+  a{color:inherit}
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    font-weight:500;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  /* ---------- header ---------- */
+  .topbar{
+    position:sticky;
+    top:env(safe-area-inset-top, 0px);
+    z-index:20;
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .topbar-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    min-height:56px;
+    flex-wrap:wrap;
+    padding-block:8px;
+  }
+  .brand{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.1em;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand .tag{
+    color:var(--paper);
+    background:var(--accent);
+    padding:2px 7px;
+    letter-spacing:.08em;
+  }
+  :root[data-theme="dark"] .brand .tag{color:#0E1312}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .brand .tag{color:#0E1312}}
+
+  .topnav{display:flex;gap:20px;flex-wrap:wrap;font-family:var(--ui);font-size:13px}
+  .topnav a{color:var(--muted);text-decoration:none;padding-block:4px;border-bottom:1px solid transparent}
+  .topnav a:hover{color:var(--ink);border-bottom-color:var(--accent)}
+
+  /* ---------- hero ---------- */
+  .hero{padding-block:clamp(40px,7vw,76px) clamp(28px,4vw,44px)}
+  .hero-head{display:flex;flex-direction:column;gap:18px}
+  h1{
+    font-size:clamp(34px,6.2vw,62px);
+    letter-spacing:-.02em;
+    font-weight:700;
+  }
+  h1 .thin{font-weight:500;color:var(--ink-2);display:block}
+  .lede{
+    font-size:clamp(16px,1.6vw,18.5px);
+    color:var(--ink-2);
+    max-width:62ch;
+    margin-top:4px;
+  }
+
+  /* ---------- ICOM diagram ---------- */
+  .icom{
+    margin-top:clamp(28px,4vw,48px);
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    padding:clamp(14px,2.4vw,26px);
+  }
+  .icom-cap{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    border-bottom:1px solid var(--line-soft);
+    padding-bottom:10px;
+    margin-bottom:8px;
+  }
+  .icom svg{display:block;width:100%;height:auto;max-width:100%}
+  .icom-mobile{display:none}
+
+  @media (max-width:660px){
+    .icom svg{display:none}
+    .icom-mobile{display:flex;flex-direction:column;gap:10px;padding-top:8px}
+    .icom-row{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:baseline}
+    .icom-row .k{
+      font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+      color:var(--accent);border:1px solid var(--line);padding:3px 6px;white-space:nowrap;
+    }
+    .icom-row .v{font-size:14px;color:var(--ink-2)}
+    .icom-core{
+      font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:.04em;
+      border:2px solid var(--ink);padding:12px 14px;text-align:center;
+    }
+  }
+
+  /* ---------- stats ---------- */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-top:clamp(24px,3vw,36px);
+  }
+  .stat{background:var(--paper);padding:16px 18px;display:flex;flex-direction:column;gap:4px}
+  .stat .n{
+    font-family:var(--display);
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-.01em;
+    font-variant-numeric:tabular-nums;
+    line-height:1;
+  }
+  .stat .l{font-family:var(--ui);font-size:12.5px;color:var(--muted)}
+
+  /* ---------- sections ---------- */
+  section{scroll-margin-top:80px}
+  .sec{padding-block:clamp(44px,6vw,80px);border-top:1px solid var(--line-soft)}
+  .sec-head{display:flex;flex-direction:column;gap:10px;margin-bottom:clamp(24px,3.4vw,40px)}
+  .sec-head h2{font-size:clamp(24px,3.4vw,34px);letter-spacing:-.01em}
+  .sec-head p{color:var(--ink-2);max-width:66ch;font-size:15.5px}
+
+  /* ---------- modules ---------- */
+  .module{margin-bottom:clamp(36px,5vw,60px)}
+  .module:last-child{margin-bottom:0}
+  .module-bar{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    flex-wrap:wrap;
+    border-top:2px solid var(--ink);
+    padding-top:12px;
+    margin-bottom:22px;
+  }
+  .module-bar .m-id{
+    font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--clay);
+  }
+  .module-bar h3{font-size:clamp(19px,2.4vw,25px);flex:1 1 320px;letter-spacing:-.01em}
+  .module-bar .m-hours{font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+  .lessons{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+  .lesson{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-top:3px solid var(--accent);
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .lesson-top{display:flex;align-items:flex-start;gap:12px}
+  .lesson .num{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:600;
+    color:var(--paper);
+    background:var(--accent);
+    padding:3px 7px;
+    line-height:1.3;
+    flex:none;
+    font-variant-numeric:tabular-nums;
+  }
+  :root[data-theme="dark"] .lesson .num{color:#0E1312}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .lesson .num{color:#0E1312}}
+  .lesson h4{font-size:18.5px;line-height:1.2}
+  .lesson ol{counter-reset:pt;display:flex;flex-direction:column;gap:7px}
+  .lesson ol li{
+    counter-increment:pt;
+    position:relative;
+    padding-left:26px;
+    font-size:14.5px;
+    color:var(--ink-2);
+    line-height:1.45;
+  }
+  .lesson ol li::before{
+    content:counter(pt,decimal-leading-zero);
+    position:absolute;left:0;top:1px;
+    font-family:var(--mono);font-size:11px;color:var(--muted);
+  }
+  .lesson-foot{
+    margin-top:auto;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    padding-top:12px;
+    border-top:1px solid var(--line-soft);
+  }
+  .pill{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    border:1px solid var(--line);
+    color:var(--muted);
+    padding:3px 7px;
+  }
+  .pill.solo{border-color:var(--clay);color:var(--clay)}
+  .pill.prac{border-color:var(--accent);color:var(--accent)}
+
+  /* ---------- toolkit ---------- */
+  .toolkit{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:26px}
+  .tool-group h4{
+    font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--clay);margin-bottom:12px;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{
+    font-family:var(--ui);
+    font-size:13px;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    padding:5px 10px;
+    color:var(--ink-2);
+  }
+
+  /* ---------- self-study ---------- */
+  .study-tools{
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    justify-content:space-between;
+    margin-bottom:26px;
+  }
+  .search-field{flex:1 1 280px;display:flex;flex-direction:column;gap:6px}
+  .search-field label{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .search-field input{
+    font-family:var(--ui);
+    font-size:15px;
+    color:var(--ink);
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    padding:10px 12px;
+    width:100%;
+  }
+  .search-field input::placeholder{color:var(--muted)}
+  .search-field input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+  .progress-box{flex:1 1 260px;display:flex;flex-direction:column;gap:8px}
+  .progress-top{
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  }
+  .progress-top b{font-family:var(--display);font-size:20px;color:var(--ink);letter-spacing:0;font-variant-numeric:tabular-nums}
+  .bar{height:6px;background:var(--line-soft);border:1px solid var(--line);position:relative;overflow:hidden}
+  .bar span{position:absolute;inset:0 auto 0 0;width:0;background:var(--accent);transition:width .25s ease}
+  .reset{
+    align-self:flex-start;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    background:none;border:1px solid var(--line);color:var(--muted);
+    padding:4px 8px;cursor:pointer;
+  }
+  .reset:hover{color:var(--ink);border-color:var(--ink)}
+
+  .filter-note{font-family:var(--mono);font-size:12px;color:var(--clay);margin-bottom:14px}
+
+  .qblock{border-top:1px solid var(--line);}
+  .qblock:last-of-type{border-bottom:1px solid var(--line)}
+  .qblock > summary{
+    list-style:none;
+    cursor:pointer;
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    padding:16px 0;
+  }
+  .qblock > summary::-webkit-details-marker{display:none}
+  .qblock > summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .q-id{
+    font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;
+    color:var(--muted);flex:none;width:6.5em;
+  }
+  .q-title{font-family:var(--display);font-weight:600;font-size:17.5px;flex:1}
+  .q-meta{font-family:var(--mono);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+  .chev{flex:none;width:10px;height:10px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(45deg) translateY(-2px);transition:transform .2s ease}
+  .qblock[open] > summary .chev{transform:rotate(225deg) translateY(-2px)}
+  .qlist{display:flex;flex-direction:column;gap:2px;padding:0 0 18px 0}
+  .q-item{display:flex;gap:12px;align-items:flex-start;padding:7px 10px 7px 0}
+  .q-item label{display:flex;gap:12px;align-items:flex-start;cursor:pointer;width:100%}
+  .q-item input{
+    appearance:none;
+    -webkit-appearance:none;
+    flex:none;
+    width:16px;height:16px;
+    margin-top:4px;
+    border:1px solid var(--line);
+    background:var(--panel-2);
+    cursor:pointer;
+    position:relative;
+  }
+  .q-item input:checked{background:var(--accent);border-color:var(--accent)}
+  .q-item input:checked::after{
+    content:"";position:absolute;left:4.5px;top:1px;width:4px;height:9px;
+    border-right:2px solid var(--panel-2);border-bottom:2px solid var(--panel-2);
+    transform:rotate(42deg);
+  }
+  .q-item input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .q-item .q-n{font-family:var(--mono);font-size:11.5px;color:var(--muted);flex:none;width:2.2em;margin-top:3px;font-variant-numeric:tabular-nums}
+  .q-item .q-t{font-size:15px;color:var(--ink-2);line-height:1.5}
+  .q-item input:checked ~ .q-t,
+  .q-item input:checked ~ .q-n{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding-block:32px 48px}
+  .foot-inner{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.06em}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important}
+  }
+</style>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand"><span class="tag">ТССА</span> Теорія систем та системний аналіз</div>
+    <nav class="topnav">
+      <a href="#struktura">Структура</a>
+      <a href="#tema-1">Тема 1</a>
+      <a href="#tema-2">Тема 2</a>
+      <a href="#instrumenty">Інструментарій</a>
+      <a href="#samopidhotovka">Самопідготовка</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="wrap hero">
+    <div class="hero-head">
+      <span class="eyebrow">Навчальна дисципліна</span>
+      <h1>Теорія систем<span class="thin">та системний аналіз</span></h1>
+    </div>
+    <p class="lede">Дві теми, вісім занять і вісім практичних: від визначення системи та її властивостей — до моделювання процесів у IDEF0 і ARIS, нечіткого виведення та експертних оцінок у задачах прийняття рішень.</p>
+
+    <div class="icom">
+      <div class="icom-cap">
+        <span>Дисципліна як система · нотація IDEF0 (ICOM)</span>
+        <span>Вхід → Функція → Вихід</span>
+      </div>
+
+      <svg viewBox="0 0 780 428" role="img" aria-label="Діаграма IDEF0: вхід — проблема та об'єкт дослідження, керування — принципи системного підходу, механізм — методи системного аналізу, вихід — модель, структура та обґрунтоване рішення">
+        <!-- control arrow (top) -->
+        <text x="390" y="40" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="14" fill="currentColor" opacity="0.62">КЕРУВАННЯ · CONTROL</text>
+        <text x="390" y="62" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="currentColor">Принципи системного підходу · цілі аналізу</text>
+        <line x1="390" y1="78" x2="390" y2="140" stroke="currentColor" stroke-width="1.4"/>
+        <polygon points="390,152 384,138 396,138" fill="currentColor"/>
+
+        <!-- input arrow (left) -->
+        <text x="18" y="182" font-family="IBM Plex Mono, monospace" font-size="14" fill="currentColor" opacity="0.62">ВХІД · INPUT</text>
+        <text x="18" y="203" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="currentColor">Системна проблема,</text>
+        <text x="18" y="222" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="currentColor">реальний об'єкт, дані</text>
+        <line x1="18" y1="238" x2="258" y2="238" stroke="currentColor" stroke-width="1.4"/>
+        <polygon points="270,238 256,232 256,244" fill="currentColor"/>
+
+        <!-- the block -->
+        <rect x="270" y="170" width="240" height="136" fill="none" stroke="currentColor" stroke-width="2.4"/>
+        <text x="390" y="228" text-anchor="middle" font-family="IBM Plex Sans Condensed, IBM Plex Sans, sans-serif" font-weight="700" font-size="40" letter-spacing="2" fill="currentColor">ТССА</text>
+        <text x="390" y="256" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="currentColor" opacity="0.62">А0 · дослідити систему</text>
+        <text x="390" y="280" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="14" fill="currentColor" opacity="0.8">8 занять · 8 практичних · 128 год</text>
+
+        <!-- output arrow (right) -->
+        <line x1="510" y1="238" x2="750" y2="238" stroke="currentColor" stroke-width="1.4"/>
+        <polygon points="762,238 748,232 748,244" fill="currentColor"/>
+        <text x="762" y="182" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="14" fill="currentColor" opacity="0.62">ВИХІД · OUTPUT</text>
+        <text x="762" y="203" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="currentColor">Модель, склад і структура,</text>
+        <text x="762" y="222" text-anchor="end" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="currentColor">обґрунтоване рішення</text>
+
+        <!-- mechanism arrow (bottom) -->
+        <line x1="390" y1="380" x2="390" y2="318" stroke="currentColor" stroke-width="1.4"/>
+        <polygon points="390,306 384,320 396,320" fill="currentColor"/>
+        <text x="390" y="398" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="14" fill="currentColor" opacity="0.62">МЕХАНІЗМ · MECHANISM</text>
+        <text x="390" y="420" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="currentColor">Дерево цілей · IDEF0 · DFD · ARIS · нечіткий вивід · МАІ</text>
+      </svg>
+
+      <div class="icom-mobile">
+        <div class="icom-row"><span class="k">Керування</span><span class="v">Принципи системного підходу, цілі аналізу</span></div>
+        <div class="icom-row"><span class="k">Вхід</span><span class="v">Системна проблема, реальний об'єкт, дані</span></div>
+        <div class="icom-core">ТССА<br><span style="font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.06em;opacity:.65">А0 · дослідити систему</span></div>
+        <div class="icom-row"><span class="k">Механізм</span><span class="v">Дерево цілей, IDEF0, DFD, ARIS, нечіткий вивід, МАІ</span></div>
+        <div class="icom-row"><span class="k">Вихід</span><span class="v">Модель, склад і структура, обґрунтоване рішення</span></div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span class="n">2</span><span class="l">теми</span></div>
+      <div class="stat"><span class="n">8</span><span class="l">лекційних занять</span></div>
+      <div class="stat"><span class="n">8</span><span class="l">практичних занять</span></div>
+      <div class="stat"><span class="n">128</span><span class="l">год самопідготовки</span></div>
+      <div class="stat"><span class="n">73</span><span class="l">контрольні питання</span></div>
+    </div>
+  </section>
+
+  <section id="struktura" class="wrap sec">
+    <div class="sec-head">
+      <span class="eyebrow">Структура курсу</span>
+      <h2>Дві теми, кожна з чотирьох занять</h2>
+      <p>Кожне заняття складається з лекції, самостійної роботи за тими самими питаннями та практичного заняття. Між зборами на кожну тему відводиться 64 години самостійної підготовки за переліком питань унизу сторінки.</p>
+    </div>
+
+    <div class="module" id="tema-1">
+      <div class="module-bar">
+        <span class="m-id">Тема 1</span>
+        <h3>Теоретичні основи теорії систем та системного аналізу</h3>
+        <span class="m-hours">Заняття 1–4 · 64 год сам. підготовки</span>
+      </div>
+      <div class="lessons">
+        <article class="lesson">
+          <div class="lesson-top">
+            <span class="num">Л1</span>
+            <h4><a href="./st_01.html">Вступ до теорії систем. Системний підхід та системний аналіз</a></h4>
+          </div>
+          <ol>
+            <li>Сучасні уявлення про склад загальної теорії систем. Основні підходи та концепції.</li>
+            <li>Історія розвитку системних уявлень. Від кібернетики до загальної теорії систем.</li>
+            <li>Основні напрямки системних досліджень та їх взаємозв'язок.</li>
+            <li>Предмет системного аналізу та принципи системного підходу.</li>
+          </ol>
+          <div class="lesson-foot">
+            <span class="pill solo">Самостійна робота</span>
+            <span class="pill prac">Практичне 1</span>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-top">
+            <span class="num">Л2</span>
+            <h4>Поняття системи та її властивості. Класифікація систем</h4>
+          </div>
+          <ol>
+            <li>Поняття системи. Властивості системи та системна проблема.</li>
+            <li>Стан і функціонування системи. Формування цілей аналізу та контексту розгляду.</li>
+            <li>Загальні підходи до класифікації систем. Класифікація АІС за принципом функціонування.</li>
+            <li>Поняття складності та масштабності систем. Властивості складних систем. Класифікація за способом керування.</li>
+          </ol>
+          <div class="lesson-foot">
+            <span class="pill solo">Самостійна робота</span>
+            <span class="pill prac">Практичне 2</span>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-top">
+            <span class="num">Л3</span>
+            <h4>Життєвий цикл системи. Методології системних досліджень. Дерево цілей</h4>
+          </div>
+          <ol>
+            <li>Поняття, етапи та моделі життєвого циклу інформаційних систем.</li>
+            <li>Переваги і недоліки моделей ЖЦ ІС. Процеси ЖЦ ІС.</li>
+            <li>Послідовність «методологія–метод–нотація–засіб». Методології системних досліджень.</li>
+            <li>Особливості методів системного аналізу. Побудова дерева цілей. Діаграми потоків даних.</li>
+          </ol>
+          <div class="lesson-foot">
+            <span class="pill solo">Самостійна робота</span>
+            <span class="pill prac">Практичне 3</span>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-top">
+            <span class="num">Л4</span>
+            <h4>Моделювання в системному аналізі. Типи системних моделей</h4>
+          </div>
+          <ol>
+            <li>Моделювання як метод наукового пізнання. Поняття моделі та її властивості. Поняття адекватності.</li>
+            <li>Класифікація моделей. Кортежний запис моделі. Гомеостатичні моделі.</li>
+            <li>Структура системної моделі. Морфологічна модель системи. Модель «чорна скриня».</li>
+            <li>Модель «склад системи», модель «структура системи». Матрична форма опису структури.</li>
+          </ol>
+          <div class="lesson-foot">
+            <span class="pill solo">Самостійна робота</span>
+            <span class="pill prac">Практичне 4</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <div class="module" id="tema-2">
+      <div class="module-bar">
+        <span class="m-id">Тема 2</span>
+        <h3>Методології опису процесів. Аналіз, синтез та прийняття рішень</h3>
+        <span class="m-hours">Заняття 5–8 · 64 год сам. підготовки</span>
+      </div>
+      <div class="lessons">
+
+        <article class="lesson">
+          <div class="lesson-top">
+            <span class="num">Л5</span>
+            <h4>Основні методології опису процесів</h4>
+          </div>
+          <ol>
+            <li>Загальні відомості про методології моделювання. Методологія IDEF0.</li>
+            <li>Методологія IDEF3. Методологія DFD.</li>
+            <li>Методологія ARIS. Процесний підхід до моделювання систем. Типи та групи ARIS-моделей.</li>
+            <li>Організаційні діаграми (Organization Chart). Карта процесів (Process Landscape). Порівняння методик.</li>
+          </ol>
+          <div class="lesson-foot">
+            <span class="pill solo">Самостійна робота</span>
+            <span class="pill prac">Практичне 5</span>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-top">
+            <span class="num">Л6</span>
+            <h4>Аналіз та синтез у системних дослідженнях. Координація</h4>
+          </div>
+          <ol>
+            <li>Аналітичний підхід до дослідження складних систем. Визначення моделі. Цілі моделювання.</li>
+            <li>Класифікація моделей за ціллю та матеріалом побудови. Повнота моделі. Декомпозиція та агрегування.</li>
+            <li>Системні особливості моделей інформаційних систем.</li>
+            <li>Аналіз та синтез у теорії пізнання. Основні проблеми координації. Синтез координуючого елемента.</li>
+            <li>Процедури координації. Використання зворотного зв'язку. Модифікація. Декомпозиція.</li>
+          </ol>
+          <div class="lesson-foot">
+            <span class="pill solo">Самостійна робота</span>
+            <span class="pill prac">Практичне 6</span>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-top">
+            <span class="num">Л7</span>
+            <h4>Нечіткі множини та логіко-лінгвістичні методи</h4>
+          </div>
+          <ol>
+            <li>Розвиток теорії нечітких множин. Основні визначення та характеристики.</li>
+            <li>Основні операції над нечіткими множинами. Поняття лінгвістичної змінної.</li>
+            <li>Методи побудови функцій належності. Форми представлення та нечіткий висновок.</li>
+            <li>Прийняття рішень на основі нечітких множин. Продукційна модель представлення знань.</li>
+            <li>Алгоритми нечіткого виводу: Мамдані, Цукамото, Ларсена, Сугено. Порівняння.</li>
+          </ol>
+          <div class="lesson-foot">
+            <span class="pill solo">Самостійна робота</span>
+            <span class="pill prac">Практичне 7</span>
+          </div>
+        </article>
+
+        <article class="lesson">
+          <div class="lesson-top">
+            <span class="num">Л8</span>
+            <h4>Експертне оцінювання. Інформаційні системи у прийнятті рішень</h4>
+          </div>
+          <ol>
+            <li>Психометрична шкала Сааті. Основні форми проведення експертизи. Метод Дельфі.</li>
+            <li>Етапи підготовки та проведення експертизи. Загальні відомості про метод аналізу ієрархій.</li>
+            <li>Загальні відомості про прийняття рішення. Визначення та класифікація експертних систем.</li>
+            <li>Труднощі розробки ЕС. Методологія та етапи побудови. Приклади та оцінка переваг/недоліків.</li>
+          </ol>
+          <div class="lesson-foot">
+            <span class="pill solo">Самостійна робота</span>
+            <span class="pill prac">Практичне 8</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="instrumenty" class="wrap sec">
+    <div class="sec-head">
+      <span class="eyebrow">Інструментарій</span>
+      <h2>Нотації та методи, якими доведеться володіти</h2>
+      <p>Послідовність «методологія — метод — нотація — засіб» проходить через увесь курс: від загальних принципів до конкретної діаграми, яку ви малюєте на практичному занятті.</p>
+    </div>
+    <div class="toolkit">
+      <div class="tool-group">
+        <h4>Опис процесів</h4>
+        <div class="chips">
+          <span class="chip">IDEF0 · ICOM</span>
+          <span class="chip">IDEF3</span>
+          <span class="chip">DFD</span>
+          <span class="chip">ARIS</span>
+          <span class="chip">Process Landscape</span>
+          <span class="chip">Organization Chart</span>
+        </div>
+      </div>
+      <div class="tool-group">
+        <h4>Моделі системи</h4>
+        <div class="chips">
+          <span class="chip">«Чорна скриня»</span>
+          <span class="chip">Склад системи</span>
+          <span class="chip">Структура системи</span>
+          <span class="chip">Морфологічна модель</span>
+          <span class="chip">Кортежний запис</span>
+          <span class="chip">Матриця суміжності</span>
+          <span class="chip">Гомеостатичні моделі</span>
+        </div>
+      </div>
+      <div class="tool-group">
+        <h4>Життєвий цикл</h4>
+        <div class="chips">
+          <span class="chip">Водоспадна модель</span>
+          <span class="chip">Ітераційна модель</span>
+          <span class="chip">Спіральна модель</span>
+          <span class="chip">SSADM</span>
+          <span class="chip">RUP</span>
+          <span class="chip">Agile</span>
+        </div>
+      </div>
+      <div class="tool-group">
+        <h4>Прийняття рішень</h4>
+        <div class="chips">
+          <span class="chip">Дерево цілей</span>
+          <span class="chip">Функція належності</span>
+          <span class="chip">Лінгвістична змінна</span>
+          <span class="chip">Мамдані</span>
+          <span class="chip">Сугено</span>
+          <span class="chip">Цукамото</span>
+          <span class="chip">Ларсен</span>
+          <span class="chip">Шкала Сааті 1–9</span>
+          <span class="chip">МАІ</span>
+          <span class="chip">Метод Дельфі</span>
+          <span class="chip">Експертні системи</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="samopidhotovka" class="wrap sec">
+    <div class="sec-head">
+      <span class="eyebrow">Самостійна підготовка · 128 годин</span>
+      <h2>73 питання для міжзборового періоду</h2>
+      <p>Питання згруповані за розділами обох тем. Позначайте опрацьоване — прогрес зберігається у вашому браузері. Пошук шукає за будь-яким словом у формулюванні питання.</p>
+    </div>
+
+    <div class="study-tools">
+      <div class="search-field">
+        <label for="q-search">Пошук за питаннями</label>
+        <input id="q-search" type="search" autocomplete="off" placeholder="напр.: декомпозиція, Мамдані, ЖЦ, адекватність">
+      </div>
+      <div class="progress-box">
+        <div class="progress-top"><span>Опрацьовано</span><span><b id="p-done">0</b> / 73</span></div>
+        <div class="bar"><span id="p-bar"></span></div>
+        <button class="reset" id="p-reset" type="button">Скинути прогрес</button>
+      </div>
+    </div>
+
+    <p class="filter-note" id="filter-note" hidden></p>
+
+    <div id="qsections">
+
+      <details class="qblock" open>
+        <summary>
+          <span class="q-id">Т1 · Р1</span>
+          <span class="q-title">Розвиток системних уявлень та принципи системного аналізу</span>
+          <span class="q-meta">5</span>
+          <span class="chev"></span>
+        </summary>
+        <ul class="qlist">
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-1-1"><span class="q-n">01</span><span class="q-t">Що таке загальна теорія систем та які основні напрямки вона охоплює?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-1-2"><span class="q-n">02</span><span class="q-t">Охарактеризуйте основні етапи історичного розвитку системних уявлень.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-1-3"><span class="q-n">03</span><span class="q-t">У чому полягає відмінність системного підходу від редукціонізму?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-1-4"><span class="q-n">04</span><span class="q-t">Що є предметом системного аналізу і чим він відрізняється від загальної теорії систем?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-1-5"><span class="q-n">05</span><span class="q-t">Перелічіть та розкрийте основні принципи системного підходу.</span></label></li>
+        </ul>
+      </details>
+
+      <details class="qblock">
+        <summary>
+          <span class="q-id">Т1 · Р2</span>
+          <span class="q-title">Поняття системи та її властивості</span>
+          <span class="q-meta">5</span>
+          <span class="chev"></span>
+        </summary>
+        <ul class="qlist">
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-2-6"><span class="q-n">06</span><span class="q-t">Сформулюйте визначення поняття «система». У чому різниця між системою та сукупністю елементів?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-2-7"><span class="q-n">07</span><span class="q-t">Перелічіть основні властивості системи та охарактеризуйте кожну з них.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-2-8"><span class="q-n">08</span><span class="q-t">Що таке «системна проблема» і як вона пов'язана з цілями системного аналізу?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-2-9"><span class="q-n">09</span><span class="q-t">Розкрийте поняття стану системи та її функціонування.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-2-10"><span class="q-n">10</span><span class="q-t">Що розуміється під контекстом розгляду системи та як формуються цілі аналізу?</span></label></li>
+        </ul>
+      </details>
+
+      <details class="qblock">
+        <summary>
+          <span class="q-id">Т1 · Р3</span>
+          <span class="q-title">Класифікація систем. Складність систем</span>
+          <span class="q-meta">5</span>
+          <span class="chev"></span>
+        </summary>
+        <ul class="qlist">
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-3-11"><span class="q-n">11</span><span class="q-t">Яким чином класифікуються системи за загальними підходами?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-3-12"><span class="q-n">12</span><span class="q-t">Охарактеризуйте основні принципи класифікації АІС за принципом функціонування.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-3-13"><span class="q-n">13</span><span class="q-t">Що таке складність системи? Як вона вимірюється?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-3-14"><span class="q-n">14</span><span class="q-t">Перелічіть властивості складних систем та наведіть приклади.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-3-15"><span class="q-n">15</span><span class="q-t">Як класифікуються системи за способом керування?</span></label></li>
+        </ul>
+      </details>
+
+      <details class="qblock">
+        <summary>
+          <span class="q-id">Т1 · Р4</span>
+          <span class="q-title">Життєвий цикл системи, методології системних досліджень</span>
+          <span class="q-meta">5</span>
+          <span class="chev"></span>
+        </summary>
+        <ul class="qlist">
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-4-16"><span class="q-n">16</span><span class="q-t">Що таке «життєвий цикл» інформаційної системи та яке його значення для проектування?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-4-17"><span class="q-n">17</span><span class="q-t">Перелічіть та охарактеризуйте етапи ЖЦ ІС.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-4-18"><span class="q-n">18</span><span class="q-t">Які існують моделі ЖЦ ІС? Порівняйте водоспадну та ітераційну моделі.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-4-19"><span class="q-n">19</span><span class="q-t">У чому полягає послідовність «методологія–метод–нотація–засіб»?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-4-20"><span class="q-n">20</span><span class="q-t">Охарактеризуйте основні методології системних досліджень (SSADM, RUP, Agile тощо).</span></label></li>
+        </ul>
+      </details>
+
+      <details class="qblock">
+        <summary>
+          <span class="q-id">Т1 · Р5</span>
+          <span class="q-title">Побудова дерева цілей. Потоки в системі</span>
+          <span class="q-meta">5</span>
+          <span class="chev"></span>
+        </summary>
+        <ul class="qlist">
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-5-21"><span class="q-n">21</span><span class="q-t">У чому полягають особливості методів системного аналізу?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-5-22"><span class="q-n">22</span><span class="q-t">Що таке дерево цілей та як воно будується?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-5-23"><span class="q-n">23</span><span class="q-t">Які види потоків існують у системах?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-5-24"><span class="q-n">24</span><span class="q-t">Що таке діаграма потоків даних (DFD)? Перелічіть її основні елементи.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-5-25"><span class="q-n">25</span><span class="q-t">Яке призначення діаграм потоків у системному аналізі?</span></label></li>
+        </ul>
+      </details>
+
+      <details class="qblock">
+        <summary>
+          <span class="q-id">Т1 · Р6–7</span>
+          <span class="q-title">Моделювання та типи моделей системи</span>
+          <span class="q-meta">9</span>
+          <span class="chev"></span>
+        </summary>
+        <ul class="qlist">
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-6-26"><span class="q-n">26</span><span class="q-t">Що таке модель у контексті системного аналізу та яке її призначення?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-6-27"><span class="q-n">27</span><span class="q-t">Що розуміється під адекватністю моделі? Як вона перевіряється?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-6-28"><span class="q-n">28</span><span class="q-t">Наведіть класифікацію моделей за різними ознаками.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-6-29"><span class="q-n">29</span><span class="q-t">Що таке кортежний запис моделі? Запишіть загальну форму.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-6-30"><span class="q-n">30</span><span class="q-t">Охарактеризуйте гомеостатичні моделі та наведіть приклади їх застосування.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-6-31"><span class="q-n">31</span><span class="q-t">Що таке морфологічна модель системи та де вона використовується?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-6-32"><span class="q-n">32</span><span class="q-t">Розкрийте суть моделі «чорна скриня» та її відмінність від «білої скрині».</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-6-33"><span class="q-n">33</span><span class="q-t">Що таке модель «склад системи» та яку інформацію вона відображає?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-6-34"><span class="q-n">34</span><span class="q-t">Опишіть модель «структура системи» та матричну форму її представлення.</span></label></li>
+        </ul>
+      </details>
+
+      <details class="qblock">
+        <summary>
+          <span class="q-id">Т2 · Р8</span>
+          <span class="q-title">Основні методології опису процесів</span>
+          <span class="q-meta">6</span>
+          <span class="chev"></span>
+        </summary>
+        <ul class="qlist">
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-8-1"><span class="q-n">01</span><span class="q-t">Чим відрізняються між собою методології IDEF0, IDEF3 та DFD? Коли застосовується кожна?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-8-2"><span class="q-n">02</span><span class="q-t">Опишіть основні елементи IDEF0-моделі (функціональний блок, стрілки ICOM).</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-8-3"><span class="q-n">03</span><span class="q-t">Що таке методологія IDEF3 та які об'єкти вона моделює?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-8-4"><span class="q-n">04</span><span class="q-t">Охарактеризуйте типи та групи ARIS-моделей.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-8-5"><span class="q-n">05</span><span class="q-t">Що таке Process Landscape та Organization Chart у методології ARIS?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-8-6"><span class="q-n">06</span><span class="q-t">Проведіть порівняння методологій моделювання за критеріями: призначення, нотація, галузь застосування.</span></label></li>
+        </ul>
+      </details>
+
+      <details class="qblock">
+        <summary>
+          <span class="q-id">Т2 · Р9</span>
+          <span class="q-title">Аналіз та синтез у системних дослідженнях</span>
+          <span class="q-meta">5</span>
+          <span class="chev"></span>
+        </summary>
+        <ul class="qlist">
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-9-7"><span class="q-n">07</span><span class="q-t">У чому суть аналітичного підходу до дослідження складних систем?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-9-8"><span class="q-n">08</span><span class="q-t">Що таке ціль моделювання та яка класифікація моделей за ціллю?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-9-9"><span class="q-n">09</span><span class="q-t">Що таке повнота моделі? Як здійснюється декомпозиція та агрегування?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-9-10"><span class="q-n">10</span><span class="q-t">Що таке агрегат СА? Наведіть види агрегатів.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-9-11"><span class="q-n">11</span><span class="q-t">Які системні особливості мають моделі інформаційних систем?</span></label></li>
+        </ul>
+      </details>
+
+      <details class="qblock">
+        <summary>
+          <span class="q-id">Т2 · Р10</span>
+          <span class="q-title">Різні аспекти проблеми координації</span>
+          <span class="q-meta">5</span>
+          <span class="chev"></span>
+        </summary>
+        <ul class="qlist">
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-10-12"><span class="q-n">12</span><span class="q-t">У чому відмінність між аналізом і синтезом у системному аналізі?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-10-13"><span class="q-n">13</span><span class="q-t">Що таке проблема координації? Яке її значення при проектуванні складних систем?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-10-14"><span class="q-n">14</span><span class="q-t">Як здійснюється синтез координуючого елемента?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-10-15"><span class="q-n">15</span><span class="q-t">Опишіть процедури координації та роль зворотного зв'язку.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-10-16"><span class="q-n">16</span><span class="q-t">Що таке декомпозиція та модифікація в контексті координації?</span></label></li>
+        </ul>
+      </details>
+
+      <details class="qblock">
+        <summary>
+          <span class="q-id">Т2 · Р11</span>
+          <span class="q-title">Нечітка множина. Основні визначення</span>
+          <span class="q-meta">5</span>
+          <span class="chev"></span>
+        </summary>
+        <ul class="qlist">
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-11-17"><span class="q-n">17</span><span class="q-t">Чим відрізняється нечітка множина від класичної (чіткої)?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-11-18"><span class="q-n">18</span><span class="q-t">Що таке функція належності та які її основні характеристики?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-11-19"><span class="q-n">19</span><span class="q-t">Перелічіть основні операції над нечіткими множинами (доповнення, об'єднання, перетин).</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-11-20"><span class="q-n">20</span><span class="q-t">Що таке лінгвістична змінна та де вона використовується?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-11-21"><span class="q-n">21</span><span class="q-t">Охарактеризуйте методи побудови функцій належності.</span></label></li>
+        </ul>
+      </details>
+
+      <details class="qblock">
+        <summary>
+          <span class="q-id">Т2 · Р12</span>
+          <span class="q-title">Логіко-лінгвістичні методи оцінювання і пошуку рішень</span>
+          <span class="q-meta">6</span>
+          <span class="chev"></span>
+        </summary>
+        <ul class="qlist">
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-12-22"><span class="q-n">22</span><span class="q-t">Що таке продукційна модель представлення знань?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-12-23"><span class="q-n">23</span><span class="q-t">Яку структуру мають продукційні системи представлення знань?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-12-24"><span class="q-n">24</span><span class="q-t">Опишіть алгоритм нечіткого виводу Мамдані покроково.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-12-25"><span class="q-n">25</span><span class="q-t">У чому відмінність між алгоритмами Мамдані та Сугено?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-12-26"><span class="q-n">26</span><span class="q-t">Охарактеризуйте алгоритми Цукамото та Ларсена.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-12-27"><span class="q-n">27</span><span class="q-t">Порівняйте системи нечіткого виведення за критеріями: точність, обчислювальна складність, інтерпретованість.</span></label></li>
+        </ul>
+      </details>
+
+      <details class="qblock">
+        <summary>
+          <span class="q-id">Т2 · Р13</span>
+          <span class="q-title">Експертне оцінювання. Метод експертних оцінок</span>
+          <span class="q-meta">5</span>
+          <span class="chev"></span>
+        </summary>
+        <ul class="qlist">
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-13-28"><span class="q-n">28</span><span class="q-t">Що таке психометрична шкала Сааті? Яке її призначення?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-13-29"><span class="q-n">29</span><span class="q-t">Назвіть основні форми проведення експертизи та їх особливості.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-13-30"><span class="q-n">30</span><span class="q-t">Що таке метод Дельфі та в яких випадках він застосовується?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-13-31"><span class="q-n">31</span><span class="q-t">Перелічіть етапи підготовки та проведення процедури експертного оцінювання.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-13-32"><span class="q-n">32</span><span class="q-t">Що таке метод аналізу ієрархій (МАІ) та яка його математична основа?</span></label></li>
+        </ul>
+      </details>
+
+      <details class="qblock">
+        <summary>
+          <span class="q-id">Т2 · Р14</span>
+          <span class="q-title">Інформаційні системи в процесах прийняття рішень</span>
+          <span class="q-meta">7</span>
+          <span class="chev"></span>
+        </summary>
+        <ul class="qlist">
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-14-33"><span class="q-n">33</span><span class="q-t">Охарактеризуйте загальні відомості про прийняття рішень: умови, типи, підходи.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-14-34"><span class="q-n">34</span><span class="q-t">Що таке експертна система? Як вона визначається?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-14-35"><span class="q-n">35</span><span class="q-t">За якими ознаками класифікуються експертні системи?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-14-36"><span class="q-n">36</span><span class="q-t">Які труднощі виникають під час розробки ЕС?</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-14-37"><span class="q-n">37</span><span class="q-t">Опишіть методологію та основні етапи створення ЕС.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-14-38"><span class="q-n">38</span><span class="q-t">Наведіть відомі приклади ЕС та охарактеризуйте їх.</span></label></li>
+          <li class="q-item"><label><input type="checkbox" class="q-check" id="q-14-39"><span class="q-n">39</span><span class="q-t">У чому полягають переваги та недоліки експертних систем порівняно з іншими засобами підтримки прийняття рішень?</span></label></li>
+        </ul>
+      </details>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <span>Теорія систем та системний аналіз · 2 теми · 8 занять</span>
+    <span>Прогрес зберігається локально у вашому браузері</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var KEY = 'tssa-progress-v1';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.q-check'));
+  var total = boxes.length;
+  var doneEl = document.getElementById('p-done');
+  var barEl = document.getElementById('p-bar');
+  var resetEl = document.getElementById('p-reset');
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      return raw ? (JSON.parse(raw) || {}) : {};
+    } catch (e) { return {}; }
+  }
+  function save(state) {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+  }
+
+  var state = load();
+
+  function render() {
+    var done = 0;
+    for (var i = 0; i < boxes.length; i++) { if (boxes[i].checked) done++; }
+    doneEl.textContent = done;
+    barEl.style.width = total ? (done / total * 100) + '%' : '0%';
+  }
+
+  boxes.forEach(function (box) {
+    if (state[box.id]) box.checked = true;
+    box.addEventListener('change', function () {
+      if (box.checked) { state[box.id] = 1; } else { delete state[box.id]; }
+      save(state);
+      render();
+    });
+  });
+  render();
+
+  resetEl.addEventListener('click', function () {
+    boxes.forEach(function (b) { b.checked = false; });
+    state = {};
+    save(state);
+    render();
+  });
+
+  // ---- search ----
+  var input = document.getElementById('q-search');
+  var note = document.getElementById('filter-note');
+  var blocks = Array.prototype.slice.call(document.querySelectorAll('.qblock'));
+  var items = Array.prototype.slice.call(document.querySelectorAll('.q-item'));
+
+  items.forEach(function (it) {
+    it.setAttribute('data-text', it.textContent.toLowerCase());
+  });
+  blocks.forEach(function (b) {
+    b.setAttribute('data-open', b.open ? '1' : '0');
+    b.setAttribute('data-title', (b.querySelector('.q-title').textContent + ' ' + b.querySelector('.q-id').textContent).toLowerCase());
+  });
+
+  input.addEventListener('input', function () {
+    var q = input.value.trim().toLowerCase();
+
+    if (!q) {
+      items.forEach(function (it) { it.hidden = false; });
+      blocks.forEach(function (b) {
+        b.hidden = false;
+        b.open = b.getAttribute('data-open') === '1';
+      });
+      note.hidden = true;
+      return;
+    }
+
+    var shown = 0;
+    blocks.forEach(function (b) {
+      var titleHit = b.getAttribute('data-title').indexOf(q) !== -1;
+      var visible = 0;
+      Array.prototype.forEach.call(b.querySelectorAll('.q-item'), function (it) {
+        var hit = titleHit || it.getAttribute('data-text').indexOf(q) !== -1;
+        it.hidden = !hit;
+        if (hit) visible++;
+      });
+      b.hidden = visible === 0;
+      if (visible > 0) b.open = true;
+      shown += visible;
+    });
+
+    note.hidden = false;
+    note.textContent = shown === 0
+      ? 'Нічого не знайдено за запитом «' + input.value.trim() + '»'
+      : 'Знайдено ' + shown + ' з ' + total + ' питань';
+  });
+})();
+</script>
